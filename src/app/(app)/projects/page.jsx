@@ -1,5 +1,7 @@
-export default function ProjectsPage() {
+import ProjectsPage from "./ProjectsPage";
+
+export default function Projects() {
   return (
-    <div>ProjectsPage</div>
+    <ProjectsPage />
   )
 }
