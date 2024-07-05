@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Type {
+  Frontend
+  Backend
+}
+
+enum ProjectStatus {
+  InProgress
+  Complete
+}
+
+enum TaskStatus {
+  ToDo
+  Doing
+  Done
+}
+
+model User {
+  id       String    @id @default(uuid())
+  email    String    @unique
+  name     String
+  password String
+  projects Project[]
+}
+
+model Project {
+  id                    String                  @id @default(uuid())
+  title                 String
+  slug                  String
+  startDate             DateTime
+  dueData               DateTime
+  status                ProjectStatus           @default(InProgress)
+  user                  User                    @relation(fields: [userId], references: [id])
+  userId                String
+  UserStory             UserStory[]
+  Task                  Task[]
+  FunctionalRequirement FunctionalRequirement[]
+  TechStack             TechStack[]
+}
+
+model UserStory {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  project     Project @relation(fields: [projectId], references: [id])
+  projectId   String
+}
+
+model FunctionalRequirement {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  project     Project       @relation(fields: [projectId], references: [id])
+  projectId   String
+  Requirement Requirement[]
+}
+
+model Requirement {
+  id                      String                @id @default(uuid())
+  description             String
+  fuctionalRequirement    FunctionalRequirement @relation(fields: [functionalRequirementId], references: [id])
+  functionalRequirementId String
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  due         DateTime
+  status      TaskStatus @default(ToDo)
+  project     Project    @relation(fields: [projectId], references: [id])
+  projectId   String
+}
+
+model TechStack {
+  id        String  @id @default(uuid())
+  type      Type
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+  Tool      Tool[]
+}
+
+model Tool {
+  id          String    @id @default(uuid())
+  description String
+  techStack   TechStack @relation(fields: [techStackId], references: [id])
+  techStackId String
+}
