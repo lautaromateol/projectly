@@ -1,5 +1,7 @@
+import { RegisterForm } from "./ui/RegisterForm";
+
 export default function RegisterPage() {
   return (
-    <div>page</div>
+    <RegisterForm />
   )
 }
