@@ -1,9 +1,9 @@
 import { Sidebar } from "@/components/ui/Sidebar"
 import { Header } from "@/components/ui/Header"
 
-export default function AppLayout({children}) {
+export default function AppLayout({ children }) {
   return (
-    (<div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full">
       <Sidebar />
       <div className="flex flex-col w-full">
         <Header />
@@ -11,7 +11,7 @@ export default function AppLayout({children}) {
           {children}
         </main>
       </div>
-    </div>)
+    </div>
   );
 }
 
