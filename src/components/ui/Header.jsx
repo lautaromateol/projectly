@@ -1,10 +1,16 @@
-import { HiOutlineAdjustments, HiOutlineBell, HiOutlineBriefcase, HiOutlineCalendar, HiOutlineCheck, HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { HiOutlineBell, HiOutlineBriefcase, HiOutlineCalendar, HiOutlineCheck } from "react-icons/hi";
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu";
 import { Logo } from "./Logo";
+import { auth } from "@/lib/auth.config";
+import ProfileDropdown from "./ProfileDropdown";
 
-export function Header() {
+export async function Header() {
+
+  const session = await auth()
+  
+  const isAuthenticated = !!session?.user
+
   return (
     <header
           className="bg-background border-b border-border flex items-center justify-between px-4 h-14">
@@ -49,34 +55,10 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Avatar className="w-8 h-8 border">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <span className="sr-only">User Menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>John Doe</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <HiOutlineUser className="w-5 h-5 mr-2" />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <HiOutlineAdjustments className="w-5 h-5 mr-2" />
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <HiOutlineLogout className="w-5 h-5 mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isAuthenticated ?
+            <ProfileDropdown user={session.user} />
+            : <p>Sign in</p>
+          }
           </div>
         </header>
   )
