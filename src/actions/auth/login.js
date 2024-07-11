@@ -2,6 +2,8 @@
 
 import { object, string } from "zod"
 import { signIn } from "@/lib/auth.config"
+import { prisma } from "@/lib/prisma"
+import bcrypt from "bcrypt"
 
 const signInSchema = object({
   email: string({ required_error: "Email is required" })
@@ -20,19 +22,32 @@ export async function login(credentials) {
 
     const { email, password } = await signInSchema.parseAsync(credentials)
 
-    await signIn("credentials", { email, password, redirect: false },)
+    const user = await prisma.user.findUnique({
+      where: { email }
+    })
 
-    return { ok: true }
-  } catch (error) {
-    if (error.errors[0]?.message) {
+    if (!user) {
       return {
         ok: false,
-        message: error.errors[0].message
+        message: "This user is not registered"
       }
     }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      return {
+        ok: false,
+        message: "Incorrect credentials"
+      }
+    }
+
+    await signIn("credentials", { ...user, redirect: false })
+
+    return { ok: true }
+
+  } catch (error) {
     return {
       ok: false,
-      message: "Incorrect credentials"
+      message: error.errors[0].message
     }
   }
 }
