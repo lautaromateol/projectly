@@ -1,5 +1,4 @@
 "use client"
-import Link from "next/link"
 import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { ResponsiveLine } from "@nivo/line"
@@ -7,13 +6,7 @@ import { ResponsiveBar } from "@nivo/bar"
 
 export function AnalyticsPage() {
   return (
-    (<div className="flex flex-col min-h-[100dvh]">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <Package2Icon className="h-6 w-6" />
-          <span className="text-lg font-semibold">Project Analytics</span>
-        </Link>
-      </header>
+    <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1 p-4 md:p-6 grid gap-6">
         <div>
           <h1 className="text-2xl font-bold">Project Performance</h1>
@@ -230,8 +223,8 @@ export function AnalyticsPage() {
           </div>
         </div>
       </main>
-    </div>)
-  );
+    </div>
+  )
 }
 
 function BarChart(props) {
