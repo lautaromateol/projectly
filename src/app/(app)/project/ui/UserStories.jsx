@@ -1,9 +1,8 @@
 "use client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Modal } from "@/components/ui/Modal"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { AddUserStoryForm } from "../forms/AddUserStoryForm"
+import { Story } from "./Story";
+import { AddOrEditUserStoryForm } from "../forms/AddOrEditUserStoryForm"
 
 export function UserStories({ stories, projectId }) {
   return (
@@ -11,26 +10,18 @@ export function UserStories({ stories, projectId }) {
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">User Stories</h2>
         <Modal>
-          <Modal.Opens opens="form">
+          <Modal.Opens opens="add-story-form">
             <Button size="sm">Add Story</Button>
           </Modal.Opens>
-          <Modal.Window window="form">
-            <AddUserStoryForm projectId={projectId} />
+          <Modal.Window window="add-story-form">
+            <AddOrEditUserStoryForm projectId={projectId} />
           </Modal.Window>
         </Modal>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
           stories.map((story) => (
-            <Card key={story.id}>
-              <CardHeader>
-                <CardTitle>{story.title}</CardTitle>
-                <CardDescription>{story.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Badge>{story.status === "Pending" ? "Pending" : story.status === "InProgress" ? "In Progress" : "Complete"}</Badge>
-              </CardContent>
-            </Card>
+            <Story key={story.id} story={story} projectId={projectId} />
           ))
         }
       </div>
