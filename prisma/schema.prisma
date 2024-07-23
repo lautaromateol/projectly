@@ -24,9 +24,8 @@ enum ProjectStatus {
 }
 
 enum TaskStatus {
-  ToDo
-  Doing
-  Done
+  Complete
+  Incomplete
 }
 
 enum StoryStatus {
@@ -53,9 +52,10 @@ model Project {
   user                  User                    @relation(fields: [userId], references: [id])
   userId                String
   UserStory             UserStory[]
-  Task                  Task[]
   FunctionalRequirement FunctionalRequirement[]
   TechStack             TechStack[]
+  Task                  Task[]
+  createdAt             DateTime                @default(now())
 }
 
 model UserStory {
@@ -63,8 +63,11 @@ model UserStory {
   title       String
   description String
   status      StoryStatus
+  due         DateTime
   project     Project     @relation(fields: [projectId], references: [id])
   projectId   String
+  Task        Task[]
+  createdAt   DateTime    @default(now())
 }
 
 model FunctionalRequirement {
@@ -74,16 +77,18 @@ model FunctionalRequirement {
   requirements String[]
   project      Project  @relation(fields: [projectId], references: [id])
   projectId    String
+  createdAt    DateTime @default(now())
 }
 
 model Task {
   id          String     @id @default(uuid())
-  title       String
   description String
-  due         DateTime
-  status      TaskStatus @default(ToDo)
+  status      TaskStatus @default(Incomplete)
+  userStory   UserStory  @relation(fields: [userStoryId], references: [id])
+  userStoryId String
   project     Project    @relation(fields: [projectId], references: [id])
   projectId   String
+  createdAt   DateTime   @default(now())
 }
 
 model TechStack {
@@ -92,4 +97,5 @@ model TechStack {
   tools     String[]
   project   Project  @relation(fields: [projectId], references: [id])
   projectId String
+  createdAt DateTime @default(now())
 }
