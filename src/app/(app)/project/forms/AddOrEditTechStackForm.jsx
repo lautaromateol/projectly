@@ -1,12 +1,10 @@
 "use client"
+import { Label, Input, Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from "@/components/ui/forms"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { SelectItem, Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { HiPlusCircle, HiOutlineTrash } from "react-icons/hi"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { addTechStack, editTechStack } from "@/actions"
+import { Button } from "@/components/ui/button"
 
 export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = {}, types }) {
 
@@ -50,7 +48,7 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto py-4">
+    <Card>
       <CardHeader>
         <CardTitle>{isEditSession ? "Edit" : "Add"} Tech Stack</CardTitle>
         <CardDescription>Fill out the form to add a tech stack to your project.</CardDescription>

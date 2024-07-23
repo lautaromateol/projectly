@@ -1,11 +1,11 @@
 "use client"
 import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { DatePickerWithPresets } from "@/components/ui/DatePicker"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/forms/select"
+import { DatePickerWithPresets } from "@/components/ui/forms/DatePicker"
+import { Label } from "@/components/ui/forms/label"
+import { Input } from "@/components/ui/forms/input"
+import { Textarea } from "@/components/ui/forms/textarea"
 import { Button } from "@/components/ui/button"
 import { useForm, Controller } from "react-hook-form"
 import { addTask } from "@/actions"
@@ -40,7 +40,7 @@ export function AddTaskForm({ projectId, onCloseModal }) {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto py-4">
+    <Card>
       <CardHeader>
         <CardTitle>Add Task</CardTitle>
         <CardDescription>Fill out the form to add a new task to your project.</CardDescription>
