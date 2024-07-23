@@ -1,8 +1,6 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { Label, Input, Textarea } from "@/components/ui/forms"
 import { auth } from "@/lib/auth.config"
 import Link from "next/link"
 
