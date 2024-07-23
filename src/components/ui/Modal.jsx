@@ -2,6 +2,7 @@
 import { cloneElement, createContext, useContext, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 import { Overlay } from "./Overlay";
+import { Card } from "./card";
 
 const ModalContext = createContext()
 
@@ -38,10 +39,10 @@ function Window({ children, window }) {
 
   return (
     <Overlay>
-      <div className="overflow-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-tremor-background-muted dark:bg-dark-tremor-background-muted rounded-lg shadow-md px-6 py-4 transition-all dark:text-white">
-        <button className="absolute right-8 top-6" onClick={close}><HiXMark className="text-tremor-title dark:text-white" /></button>
+      <Card className="w-1/3 max-h-[700px] overflow-y-auto fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <button className="absolute right-4 top-4" onClick={close}><HiXMark className="dark:text-white" /></button>
         {cloneElement(children, { onCloseModal: () => close() })}
-      </div>
+      </Card>
     </Overlay>
   )
 }
