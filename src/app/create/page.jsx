@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/forms/textarea";
 import Link from "next/link";
 
 export default function CreationPage() {
