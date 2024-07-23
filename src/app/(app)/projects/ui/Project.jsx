@@ -1,59 +1,61 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+"use client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { MoveHorizontalIcon } from "@/icons";
 import { formatDate } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Modal } from "@/components/ui/Modal";
 import Link from "next/link";
+import { ConfirmDelete } from "@/components/ui/ConfirmDelete";
+import { deleteProject } from "@/actions";
+import { CreateOrEditProjectForm } from "./CreateOrEditProjectForm";
 
 export default function Project({ project }) {
 
   const status = project.status === "InProgress" ? "In Progress" : "Complete"
 
   return (
-    <TableRow>
-      <TableCell>{project.title}</TableCell>
-      <TableCell>
-        <Badge variant="secondary">{status}</Badge>
-      </TableCell>
-      <TableCell>{formatDate(project.startDate)}</TableCell>
-      <TableCell>{formatDate(project.dueDate)}</TableCell>
-      <TableCell>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoveHorizontalIcon className="w-5 h-5" />
-              <span className="sr-only">Más opciones</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Link href={`/project/${project.id}`}>Details</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </TableCell>
-    </TableRow>
-  )
-}
-
-function MoveHorizontalIcon(props) {
-  return (
-    (<svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <polyline points="18 8 22 12 18 16" />
-      <polyline points="6 8 2 12 6 16" />
-      <line x1="2" x2="22" y1="12" y2="12" />
-    </svg>)
+    <Modal>
+      <TableRow>
+        <TableCell>{project.title}</TableCell>
+        <TableCell>
+          <Badge variant="secondary">{status}</Badge>
+        </TableCell>
+        <TableCell>{formatDate(project.startDate)}</TableCell>
+        <TableCell>{formatDate(project.dueDate)}</TableCell>
+        <TableCell>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoveHorizontalIcon className="w-5 h-5" />
+                <span className="sr-only">Más opciones</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <Link href={`/project/${project.id}`}>Details</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Modal.Opens opens="edit-project-form">
+                  <button>Edit</button>
+                </Modal.Opens>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Modal.Opens opens="delete-project">
+                  <button>Delete</button>
+                </Modal.Opens>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
+      </TableRow>
+      <Modal.Window window="edit-project-form">
+        <CreateOrEditProjectForm projectToEdit={project} />
+      </Modal.Window>
+      <Modal.Window window="delete-project">
+        <ConfirmDelete onClick={() => deleteProject(project.id)} resourceName="Project" />
+      </Modal.Window>
+    </Modal>
   )
 }
