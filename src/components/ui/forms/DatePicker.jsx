@@ -14,9 +14,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/forms/select"
 
-export function DatePickerWithPresets({ date, setDate }) {
+export function DatePickerWithPresets({ date, setDate, setError }) {
 
   return (
     <Popover className="w-full">
@@ -37,9 +37,10 @@ export function DatePickerWithPresets({ date, setDate }) {
         className="flex w-auto flex-col space-y-2 p-2"
       >
         <Select
-          onValueChange={(value) =>
+          onValueChange={(value) => {
             setDate(addDays(new Date(), parseInt(value)))
-          }
+            setError(false)
+          }}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select" />
