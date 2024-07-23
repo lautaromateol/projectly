@@ -1,9 +1,9 @@
 "use server";
 import { auth } from "@/lib/auth.config";
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
-export async function addTask(projectId, task) {
+export async function addTask(projectId, userStoryId, task) {
   try {
     const session = await auth()
 
@@ -29,8 +29,9 @@ export async function addTask(projectId, task) {
 
     await prisma.task.create({
       data: {
-        ...task,
-        projectId
+        description: task,
+        status: "Incomplete",
+        userStoryId
       }
     })
 

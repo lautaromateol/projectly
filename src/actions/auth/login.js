@@ -1,8 +1,7 @@
 "use server"
-
 import { object, string } from "zod"
 import { signIn } from "@/lib/auth.config"
-import { prisma } from "@/lib/prisma"
+import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
 
 const signInSchema = object({
