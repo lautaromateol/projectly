@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth.config"
-import { prisma } from "@/lib/prisma"
 import { seed } from "@/lib/seed"
 import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
 
 export async function GET() {
   try {
@@ -37,40 +37,19 @@ export async function GET() {
                 {
                   title: "As a user, I can sign up for an account",
                   description: "Users should be able to create an account to access the application.",
-                  status: "InProgress"
+                  status: "InProgress",
+                  due: new Date(project.dueDate),
                 },{
                   title: "As a user, I can create a new project",
                   description: "Users should be able to create a new project to manage their tasks.",
-                  status: "Pending"
+                  status: "Pending",
+                  due: new Date(project.dueDate),
                 },
                 {
                   title: "As a user, I can view my project dashboard",
                   description: "Users should be able to see an overview of their projects and tasks.",
-                  status: "Complete"
-                }
-              ]
-            }
-          },
-          Task: {
-            createMany: {
-              data: [
-                {
-                  title: `Project ${i + 1} - Task 1`,
-                  description: "Description",
-                  due: new Date("2024-05-15"),
-                  status: "Done"
-                },
-                {
-                  title: `Project ${i + 1} - Task 2`,
-                  description: "Description",
-                  due: new Date("2024-05-18"),
-                  status: "Doing"
-                },
-                {
-                  title: `Project ${i + 1} - Task 3`,
-                  description: "Description",
-                  due: new Date("2024-05-20"),
-                  status: "ToDo"
+                  status: "Complete",
+                  due: new Date(project.dueDate),
                 }
               ]
             }
