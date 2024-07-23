@@ -1,3 +1,4 @@
+export * from "./ProjectPageHeader";
 export * from "./UserStories";
 export * from "./FunctionalRequirements";
 export * from "./TechStack";
