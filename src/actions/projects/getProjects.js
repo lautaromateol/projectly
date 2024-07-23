@@ -1,6 +1,6 @@
 "use server"
 import { auth } from "@/lib/auth.config"
-import { prisma } from "@/lib/prisma"
+import prisma from "@/lib/prisma"
 
 export async function getProjects() {
 
@@ -17,7 +17,10 @@ export async function getProjects() {
 
   try {
    const projects = await prisma.project.findMany({
-    where: { userId: session.user.id}
+    where: { userId: session.user.id},
+    orderBy: {
+      createdAt: "desc"
+    }
    }) 
    return {
     ok: true,
