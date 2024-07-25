@@ -1,6 +1,6 @@
 import { getProjectById } from "@/actions"
 import { notFound } from "next/navigation"
-import { FunctionalRequirements, ProjectPageHeader, TechStack, UserStories } from "../ui"
+import { FunctionalRequirements, ProjectPageHeader, Tasks, TechStack, UserStories } from "../ui"
 
 export default async function ProjectPage({ params: { id } }) {
 
@@ -19,11 +19,12 @@ export default async function ProjectPage({ params: { id } }) {
 
         <UserStories stories={project.UserStory} projectId={project.id} />
 
+        <Tasks tasks={project.Task} projectId={project.id} />
+        
         <FunctionalRequirements requirements={project.FunctionalRequirement} projectId={project.id} />
 
         <TechStack stacks={project.TechStack} projectId={project.id} />
 
-        {/* <Tasks tasks={project.Task} projectId={project.id} /> */}
        
       </main>
     </div>
