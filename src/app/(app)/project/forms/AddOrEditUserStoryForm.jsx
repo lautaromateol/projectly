@@ -13,6 +13,8 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
   const [date, setDate] = useState(due ? new Date(due) : null)
 
   const [error, setError] = useState(false)
+  
+  const [isPending, setIsPending] = useState(false)
 
   const isEditSession = Boolean(id)
 
@@ -31,8 +33,11 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
 
   async function onSubmit(data) {
 
+    setIsPending(true)
+
     if (!date) {
       setError(true)
+      setIsPending(false)
       return
     }
 
@@ -43,7 +48,10 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
 
     const response = isEditSession ? await editUserStory(projectId, id, payload) : await addUserStory(projectId, payload)
 
-    if (!response.ok) return
+    if (!response.ok) {
+      setIsPending(false)
+      return
+    }
 
     if (response.ok) {
       onCloseModal()
@@ -90,7 +98,7 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
             <DatePickerWithPresets date={date} setDate={setDate} />
             {error ? <p className="text-sm text-red-500">Please select a due date</p> : ""}
           </div>
-          <Button className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} User Story</Button>
+          <Button disabled={isPending} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} User Story</Button>
         </form>
       </CardContent>
     </Card>

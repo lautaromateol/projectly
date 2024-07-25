@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { addFunctionalRequirement, editFunctionalRequirement } from "@/actions"
 import { HiPlusCircle, HiOutlineTrash } from "react-icons/hi"
@@ -7,6 +8,8 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 
 export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, requirementToEdit = {} }) {
+
+  const [isPending, setIsPending] = useState(false)
 
   const { id, title, description, requirements } = requirementToEdit
 
@@ -18,7 +21,7 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
         title,
         description,
         requirements: requirements.map((requirement) => {
-          return { value: requirement }
+          return { value: requirement.description, id: requirement.id }
         })
       }
       :
@@ -33,7 +36,10 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
   })
 
   async function onSubmit(data) {
-    const requirementsData = data.requirements.map((req) => req.value).filter((req) => req !== "");
+    
+    setIsPending(true)
+
+    const requirementsData = isEditSession ? data.requirements : data.requirements.map((req) => req.value).filter((req) => req !== "");
 
     const payload = {
       title: data.title,
@@ -43,11 +49,12 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
 
     const response = isEditSession ? await editFunctionalRequirement(projectId, id, payload) : await addFunctionalRequirement(projectId, payload)
 
-    if (!response.ok) return
-
-    if (response.ok) {
-      onCloseModal()
+    if (!response.ok) {
+      setIsPending(false)
+      return
     }
+
+      onCloseModal()
   }
 
   return (
@@ -86,7 +93,7 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
               <HiPlusCircle />
             </button>
           </div>
-          <Button className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} Functional Requirement</Button>
+          <Button disabled={isPending} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} Functional Requirement</Button>
         </form>
       </CardContent>
     </Card>

@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { Label, Input, Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from "@/components/ui/forms"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
@@ -7,6 +8,8 @@ import { addTechStack, editTechStack } from "@/actions"
 import { Button } from "@/components/ui/button"
 
 export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = {}, types }) {
+
+  const [isPending, setIsPending] = useState(false)
 
   const { id, type, tools } = stackToEdit
 
@@ -31,6 +34,9 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
   })
 
   async function onSubmit(data) {
+
+    setIsPending(true)
+
     const toolsData = data.tools.map((req) => req.value).filter((req) => req !== "");
 
     const payload = {
@@ -40,7 +46,10 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
 
     const response = isEditSession ? await editTechStack(projectId, id, payload) : await addTechStack(projectId, payload)
 
-    if (!response.ok) return
+    if (!response.ok) {
+      setIsPending(false)
+      return
+    }
 
     if (response.ok) {
       onCloseModal()
@@ -99,7 +108,7 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
               <HiPlusCircle />
             </button>
           </div>
-          <Button className="mt-2" type="submit">{ isEditSession ? "Edit" : "Add" } Tech Stack</Button>
+          <Button disabled={isPending} className="mt-2" type="submit">{ isEditSession ? "Edit" : "Add" } Tech Stack</Button>
         </form>
       </CardContent>
     </Card>
