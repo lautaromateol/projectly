@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { HiOutlineCheck, HiOutlinePlusCircle, HiOutlineX } from "react-icons/hi"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { addTask, updateTaskStatus } from "@/actions"
+import { formatDate } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/forms/input"
 import { Badge } from "@/components/ui/badge"
-import { formatDate } from "@/lib/utils"
-import { addTask, editTask } from "@/actions"
 
 export function UserStoryDetails({ projectId, story }) {
 
@@ -112,7 +112,7 @@ function Task({ id, description, status, projectId }) {
       status: status === "Complete" ? "Incomplete" : "Complete"
     }
 
-    const response = await editTask(projectId, id, payload)
+    const response = await updateTaskStatus(projectId, id, payload)
 
     if(!response.ok) {
       setIsPending(false)
