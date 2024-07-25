@@ -19,6 +19,7 @@ export async function GET() {
 
     await prisma.task.deleteMany()
     await prisma.userStory.deleteMany()
+    await prisma.requirement.deleteMany()
     await prisma.functionalRequirement.deleteMany()
     await prisma.techStack.deleteMany()
     await prisma.project.deleteMany()
@@ -39,7 +40,7 @@ export async function GET() {
                   description: "Users should be able to create an account to access the application.",
                   status: "InProgress",
                   due: new Date(project.dueDate),
-                },{
+                }, {
                   title: "As a user, I can create a new project",
                   description: "Users should be able to create a new project to manage their tasks.",
                   status: "Pending",
@@ -58,23 +59,9 @@ export async function GET() {
             createMany: {
               data: [
                 {
-                  title: `User Authentication - Project ${i + 1}`,
+                  title: `User Authentication`,
                   description: "The application should allow users to sign up, log in, and manage their account information.",
-                  requirements: [
-                    "Email and password-based authentication",
-                    "Social media authentication (Google, GitHub)",
-                    "Password reset functionality"
-                  ]
                 },
-                {
-                  title: `Project Management - Project ${i + 1}`,
-                  description: "The application should provide features to manage projects and tasks.",
-                  requirements: [
-                    "Create, update, and delete projects",
-                    "Add, assign, and track tasks within projects",
-                    "Kanban-style task board"
-                  ]
-                }
               ]
             },
           },
@@ -105,6 +92,20 @@ export async function GET() {
     })
 
     const projects = await Promise.all(projectsPromises)
+
+    const dbRequirements = await prisma.functionalRequirement.findMany()
+
+    const reqPromises = dbRequirements.map((req) => {
+      return prisma.requirement.createMany({
+        data: [
+          { description: "Create, update, and delete projects", functionalRequirementId: req.id, status: "Incomplete" },
+          { description: "Add, assign, and track tasks within projects", functionalRequirementId: req.id, status: "Incomplete" },
+          { description: "Kanban-style task board", functionalRequirementId: req.id, status: "Incomplete" }
+        ]
+      })
+    })
+
+    await Promise.all(reqPromises)
 
     return NextResponse.json({
       ok: true,
