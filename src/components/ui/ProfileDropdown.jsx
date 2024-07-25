@@ -7,7 +7,7 @@ import { HiOutlineAdjustments, HiOutlineLogout, HiOutlineUser } from "react-icon
 import Link from "next/link";
 
 
-export default function ProfileDropdown({ user }) {
+export function ProfileDropdown({ user }) {
 
   return (
     <DropdownMenu>
