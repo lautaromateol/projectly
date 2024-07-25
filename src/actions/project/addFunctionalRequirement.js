@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@/lib/auth.config";
-import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
 export async function addFunctionalRequirement(projectId, requirement) {
   try {
@@ -27,12 +27,25 @@ export async function addFunctionalRequirement(projectId, requirement) {
       }
     }
 
-    await prisma.functionalRequirement.create({
+    const { title, description, requirements } = requirement
+
+    const DBRequirement = await prisma.functionalRequirement.create({
       data: {
-        ...requirement,
+        title,
+        description,
         projectId
       }
     })
+
+    const requirementsPromises = 
+    requirements.map((req) => {
+      return {
+        description: req,
+        status: "Incomplete"
+      }
+    }).map((req) => prisma.requirement.createMany({ data: { ...req, functionalRequirementId: DBRequirement.id } }))
+
+    await Promise.all(requirementsPromises)
 
     revalidatePath(`/project/${projectId}`)
 
