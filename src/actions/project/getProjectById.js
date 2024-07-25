@@ -9,13 +9,20 @@ export async function getProjectById(id) {
         FunctionalRequirement: {
           orderBy: {
             createdAt: "asc"
+          },
+          include: {
+            Requirement: {
+              orderBy: {
+                createdAt: "asc"
+              }
+            }
           }
         },
         UserStory: {
           include: {
             Task: {
               orderBy: {
-                createdAt: "desc"
+                createdAt: "asc"
               }
             }
           },
@@ -26,6 +33,19 @@ export async function getProjectById(id) {
         TechStack: {
           orderBy: {
             createdAt: "asc"
+          }
+        },
+        Task: {
+          orderBy: {
+            createdAt: "asc"
+          },
+          include: {
+            userStory: {
+              select: {
+                title: true,
+                description: true
+              }
+            },
           }
         }
       }
