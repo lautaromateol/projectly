@@ -8,7 +8,7 @@ export function UserStories({ stories, projectId }) {
   return (
     <section className="grid gap-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">User Stories</h2>
+        <h2 className="text-2xl font-bold">User Stories</h2>
         <Modal>
           <Modal.Opens opens="add-story-form">
             <Button size="sm">Add Story</Button>

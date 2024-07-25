@@ -8,7 +8,7 @@ export function FunctionalRequirements({ requirements, projectId }) {
   return (
     <section className="grid gap-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Functional Requirements</h2>
+        <h2 className="text-2xl font-bold">Functional Requirements</h2>
         <Modal>
           <Modal.Opens opens="requirements-form">
             <Button size="sm">Add Requirement</Button>

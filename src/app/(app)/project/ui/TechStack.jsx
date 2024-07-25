@@ -11,7 +11,7 @@ export function TechStack({ stacks, projectId }) {
   return (
     <section className="grid gap-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Tech Stack</h2>
+        <h2 className="text-2xl font-bold">Tech Stack</h2>
         {stacks.length < 2 && (
           <Modal>
             <Modal.Opens opens="tech-stack-form">
