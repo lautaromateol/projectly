@@ -27,6 +27,10 @@ export async function deleteFunctionalRequirement(projectId, id) {
       }
     }
 
+    await prisma.requirement.deleteMany({
+      where: { functionalRequirementId: id }
+    })
+
     await prisma.functionalRequirement.delete({ 
       where: { id },
     })

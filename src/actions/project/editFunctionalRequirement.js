@@ -27,13 +27,41 @@ export async function editFunctionalRequirement(projectId, id, requirement) {
       }
     }
 
-    await prisma.functionalRequirement.update({
+    const { title, description, requirements } = requirement
+
+    const dbRequirement = await prisma.functionalRequirement.update({
       where: { id },
       data: {
-        ...requirement,
+        title,
+        description,
         projectId
+      },
+      include: {
+        Requirement: true
       }
     })
+
+    const clientRequirementsIds = requirements.filter((req) => req.id).map((req) => req.id)
+
+    const requirementsToDelete = dbRequirement.Requirement.filter((req) => !clientRequirementsIds.includes(req.id))
+
+    const requirementsToUpdate = requirements.filter((req) => req.id)
+
+    const requirementsToAdd = requirements.filter((req) => !req.id)
+      .map((req) => {
+        return {
+          description: req.value,
+          status: "Incomplete"
+        }
+      })
+
+    const deletePromise = requirementsToDelete.map((req) => prisma.requirement.delete({ where: { id: req.id } }))
+
+    const updatePromise = requirementsToUpdate.map((req) => prisma.requirement.update({ where: { id: req.id }, data: { description: req.value } }))
+
+    const addPromise = requirementsToAdd.map((req) => prisma.requirement.create({ data: { ...req, functionalRequirementId: id } }))
+
+    await Promise.all([...deletePromise, ...updatePromise, ...addPromise])
 
     revalidatePath(`/project/${projectId}`)
 
