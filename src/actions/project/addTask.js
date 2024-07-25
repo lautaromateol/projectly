@@ -31,7 +31,9 @@ export async function addTask(projectId, userStoryId, task) {
       data: {
         description: task,
         status: "Incomplete",
-        userStoryId
+        userStoryId,
+        projectId,
+        userId: session.user.id
       }
     })
 

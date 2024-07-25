@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth.config";
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
-export async function editTask(projectId, id, task) {
+export async function editTask(projectId, taskId, task) {
   try {
     const session = await auth()
 
@@ -28,7 +28,7 @@ export async function editTask(projectId, id, task) {
     }
 
     await prisma.task.update({
-      where: { id },
+      where: { id: taskId },
       data: task
     })
 
@@ -39,7 +39,7 @@ export async function editTask(projectId, id, task) {
     console.log(error)
     return {
       ok: false,
-      message: "Error updating the task"
+      message: "Error adding the user story"
     }
   }
 }
