@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Input, Label } from "@/components/ui/forms/input"
+import { Input, Label } from "@/components/ui/forms"
 import { register as registerAction } from "@/actions"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
