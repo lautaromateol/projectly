@@ -35,6 +35,10 @@ export async function deleteProject(projectId) {
       where: { projectId }
     })
 
+    await prisma.requirement.deleteMany({
+      where: { projectId }
+    })
+
     await prisma.functionalRequirement.deleteMany({
       where: { projectId }
     })
