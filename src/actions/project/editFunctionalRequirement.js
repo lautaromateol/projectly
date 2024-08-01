@@ -51,7 +51,8 @@ export async function editFunctionalRequirement(projectId, id, requirement) {
       .map((req) => {
         return {
           description: req.value,
-          status: "Incomplete"
+          status: "Incomplete",
+          projectId
         }
       })
 
