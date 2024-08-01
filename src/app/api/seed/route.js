@@ -30,7 +30,6 @@ export async function GET() {
           ...project,
           startDate: new Date(project.startDate),
           dueDate: new Date(project.dueDate),
-          status: project.status === "Complete" ? "Complete" : "InProgress",
           userId,
           UserStory: {
             createMany: {
@@ -38,7 +37,7 @@ export async function GET() {
                 {
                   title: "As a user, I can sign up for an account",
                   description: "Users should be able to create an account to access the application.",
-                  status: "InProgress",
+                  status: "Pending",
                   due: new Date(project.dueDate),
                 }, {
                   title: "As a user, I can create a new project",
@@ -49,7 +48,7 @@ export async function GET() {
                 {
                   title: "As a user, I can view my project dashboard",
                   description: "Users should be able to see an overview of their projects and tasks.",
-                  status: "Complete",
+                  status: "Pending",
                   due: new Date(project.dueDate),
                 }
               ]
@@ -59,8 +58,8 @@ export async function GET() {
             createMany: {
               data: [
                 {
-                  title: `User Authentication`,
-                  description: "The application should allow users to sign up, log in, and manage their account information.",
+                  title: `Project Management`,
+                  description: "The application should provide features to manage projects and tasks.",
                 },
               ]
             },
@@ -98,9 +97,9 @@ export async function GET() {
     const reqPromises = dbRequirements.map((req) => {
       return prisma.requirement.createMany({
         data: [
-          { description: "Create, update, and delete projects", functionalRequirementId: req.id, status: "Incomplete" },
-          { description: "Add, assign, and track tasks within projects", functionalRequirementId: req.id, status: "Incomplete" },
-          { description: "Kanban-style task board", functionalRequirementId: req.id, status: "Incomplete" }
+          { description: "Create, update, and delete projects", functionalRequirementId: req.id, status: "Incomplete", projectId: req.projectId },
+          { description: "Add, assign, and track tasks within projects", functionalRequirementId: req.id, status: "Incomplete", projectId: req.projectId },
+          { description: "Kanban-style task board", functionalRequirementId: req.id, status: "Incomplete", projectId: req.projectId }
         ]
       })
     })
