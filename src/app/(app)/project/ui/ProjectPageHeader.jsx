@@ -1,7 +1,12 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { formatDate } from "@/lib/utils";
+import { isBefore } from "date-fns";
 
-export function ProjectPageHeader({ project: { title, startDate, dueDate, status } }) {
+export function ProjectPageHeader({ project: { title, startDate, dueDate } }) {
+
+  const time = isBefore(new Date(), new Date(dueDate)) ? "On Time" :
+    formatDate(new Date()) === formatDate(new Date(dueDate)) ? "Deliver Today" :
+      "Out of Time";
+
   return (
     <header className="bg-muted px-4 py-6 md:px-6 md:py-8">
       <div
@@ -14,24 +19,7 @@ export function ProjectPageHeader({ project: { title, startDate, dueDate, status
             <span>End: {formatDate(new Date(dueDate))}</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div
-            className="rounded-md bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">{status === "InProgress" ? "In Progress" : "Complete"}</div>
-          <div className="flex items-center gap-2">
-            <Avatar>
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>JP</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>MS</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>AG</AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
+        <div className="rounded-md bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">{time}</div>
       </div>
     </header>
   );
