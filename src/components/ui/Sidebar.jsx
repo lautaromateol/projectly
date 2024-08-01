@@ -1,4 +1,4 @@
-import { HiOutlineCalendar, HiOutlineChartBar, HiOutlineClipboard, HiOutlineViewGrid } from "react-icons/hi";
+import { HiOutlineCalendar, HiOutlineChartBar, HiOutlineViewGrid } from "react-icons/hi";
 import { Logo } from "./Logo";
 import { NavItem } from "./NavItem";
 
@@ -7,11 +7,6 @@ const navItems = [
     title: "Projects",
     href: "/projects",
     icon: <HiOutlineViewGrid className="w-5 h-5" />
-  },
-  {
-    title: "Tasks",
-    href: "/tasks",
-    icon: <HiOutlineClipboard className="w-5 h-5" />
   },
   {
     title: "Calendar",
