@@ -1,4 +1,8 @@
+"use client"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { RESULTS_PER_PAGE } from "@/lib/constants";
+import { usePaginate } from "@/context/PaginateContext";
+import { Paginate } from "./Paginate";
 import { Task } from "./Task"
 
 export function Tasks({ tasks }) {
@@ -6,25 +10,37 @@ export function Tasks({ tasks }) {
   const incomplete = tasks.filter(({ status }) => status === "Incomplete")
   const complete = tasks.filter(({ status }) => status === "Complete")
 
+  const { incompleteTasksPage, completeTasksPage } = usePaginate()
+
+  const startIncomplete = (incompleteTasksPage - 1) * RESULTS_PER_PAGE
+  const endIncomplete = incompleteTasksPage * RESULTS_PER_PAGE
+
+  const startComplete = (completeTasksPage - 1) * RESULTS_PER_PAGE
+  const endComplete = completeTasksPage * RESULTS_PER_PAGE
+
+  const incompleteResults = incomplete.slice(startIncomplete, endIncomplete)
+  const completeResults = complete.slice(startComplete, endComplete)
+
+
   return (
     <div className="w-full max-w-7xl mx-auto">
       <Tabs defaultValue="complete" className="w-full">
-        {complete.length > 0 || incomplete.length > 0 && (
-          <TabsList className="border-b">
-            <TabsTrigger value="incomplete">Incomplete</TabsTrigger>
-            <TabsTrigger value="complete">Complete</TabsTrigger>
-          </TabsList>
-        )}
+        <TabsList className="border-b">
+          <TabsTrigger value="incomplete">Incomplete</TabsTrigger>
+          <TabsTrigger value="complete">Complete</TabsTrigger>
+        </TabsList>
         <TabsContent value="incomplete" className="py-6">
 
           {incomplete.length > 0 ? (
-
-            <div className="grid gap-4">
-              {
-                incomplete.map((task) => (
-                  <Task key={task.id} task={task} />
-                ))
-              }
+            <div className="space-y-4">
+              <div className="grid gap-4">
+                {
+                  incompleteResults.map((task) => (
+                    <Task key={task.id} task={task} />
+                  ))
+                }
+              </div>
+              <Paginate context="incomplete-tasks" results={incomplete.length} />
             </div>
           )
             :
@@ -40,12 +56,15 @@ export function Tasks({ tasks }) {
         </TabsContent>
         <TabsContent value="complete" className="py-6">
           {complete.length > 0 ? (
-            <div className="grid gap-4">
-              {
-                complete.map((task) => (
-                  <Task key={task.id} task={task} />
-                ))
-              }
+            <div className="space-y-4">
+              <div className="grid gap-4">
+                {
+                  completeResults.map((task) => (
+                    <Task key={task.id} task={task} />
+                  ))
+                }
+              </div>
+              <Paginate context="complete-tasks" results={complete.length} />
             </div>
           )
             :
