@@ -1,14 +1,17 @@
 "use client"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/forms/select"
-import { Textarea, Input, Label } from "@/components/ui/forms"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useForm, Controller } from "react-hook-form"
+import { Textarea, Label } from "@/components/ui/forms"
+import { useState } from "react"
 import { editTask } from "@/actions"
 import { Button } from "@/components/ui/button"
 
 export function EditTaskForm({ taskToEdit: { id, description, status, projectId }, onCloseModal }) {
 
-  const { handleSubmit, register, control } = useForm({
+  const [isPending, setIsPending] = useState(false)
+
+  const { handleSubmit, register, control, formState: { isDirty } } = useForm({
     defaultValues: {
       description,
       status
@@ -17,9 +20,14 @@ export function EditTaskForm({ taskToEdit: { id, description, status, projectId 
 
   async function onSubmit(data) {
 
+    setIsPending(true)
+
     const response = await editTask(projectId, id, data)
 
-    if (!response.ok) return
+    if (!response.ok) {
+      setIsPending(false)
+      return
+    }
 
     if (response.ok) {
       onCloseModal()
@@ -56,7 +64,7 @@ export function EditTaskForm({ taskToEdit: { id, description, status, projectId 
               )}
             />
           </div>
-          <Button className="mt-2" type="submit">Edit Task</Button>
+          <Button disabled={isPending || !isDirty} className="mt-2" type="submit">Edit Task</Button>
         </form>
       </CardContent>
     </Card>
