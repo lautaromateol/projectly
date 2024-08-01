@@ -1,9 +1,9 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import Project from "./Project"
+import { Table, TableHeader, TableRow, TableHead, TableBody } from "@/components/ui/table"
+import { Project } from "./Project"
 
-export default function ProjectsPage({ projects }) {
-  
+export function ProjectsPage({ projects }) {
+
   return (
     <Card>
       <CardHeader>
@@ -23,7 +23,7 @@ export default function ProjectsPage({ projects }) {
           </TableHeader>
           <TableBody>
             {projects.map((project) => (
-              <Project key={project.id} project={project}/>
+              <Project key={project.id} project={project} />
             ))}
           </TableBody>
         </Table>
