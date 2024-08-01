@@ -74,3 +74,19 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .fc .fc-button {
+   @apply capitalize inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors bg-primary text-primary-foreground
+  }
+  
+  .fc .fc-button:hover {
+    @apply hover:bg-primary/90
+  }
+  
+  .fc .fc-button:focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+  }
+
+  .fc .fc-button:disabled {
+    @apply disabled:pointer-events-none disabled:opacity-50
+  }
