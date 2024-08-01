@@ -1,16 +1,20 @@
 "use client"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { AddOrEditUserStoryForm } from "../forms/AddOrEditUserStoryForm";
 import { MoveHorizontalIcon } from "@/icons";
 import { UserStoryDetails } from "./UserStoryDetails";
+import { deleteUserStory } from "@/actions";
 import { ConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Modal } from "@/components/ui/Modal";
-import { deleteUserStory } from "@/actions";
 
 export function Story({ story, projectId }) {
+
+  const tasksLength = story.Task.length
+  const completedTasksLength = story.Task.filter((task) => task.status === "Complete").length
+
   return (
     <Modal>
       <Card>
@@ -19,7 +23,10 @@ export function Story({ story, projectId }) {
           <CardDescription>{story.description}</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <Badge>{story.status === "Pending" ? "Pending" : story.status === "InProgress" ? "In Progress" : "Complete"}</Badge>
+          <div className="flex items-center gap-2">
+            <Badge>{story.status === "Pending" ? "Pending" : story.status === "InProgress" ? "In Progress" : "Complete"}</Badge>
+            <p className="font-medium text-base">Tasks Completed: {completedTasksLength}/{tasksLength}</p>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
