@@ -1,5 +1,6 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu";
 import { HiOutlineBell, HiOutlineBriefcase, HiOutlineCalendar, HiOutlineCheck } from "react-icons/hi";
+import { CreateProjectButton } from "./CreateProjectButton";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { Button } from "./button";
 import { Logo } from "./Logo";
@@ -17,6 +18,7 @@ export async function Header() {
       className="bg-background border-b border-border flex items-center justify-between px-4 h-14">
       <Logo />
       <div className="flex items-center gap-4">
+      <CreateProjectButton />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
