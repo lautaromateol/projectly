@@ -41,7 +41,8 @@ export async function addFunctionalRequirement(projectId, requirement) {
     requirements.map((req) => {
       return {
         description: req,
-        status: "Incomplete"
+        status: "Incomplete",
+        projectId,
       }
     }).map((req) => prisma.requirement.createMany({ data: { ...req, functionalRequirementId: DBRequirement.id } }))
 
