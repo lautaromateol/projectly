@@ -1,5 +1,5 @@
 import { getProjects } from "@/actions";
-import ProjectsPage from "./ui/ProjectsPage";
+import { ProjectsPage } from "./ui/ProjectsPage";
 
 export default async function Projects() {
 
