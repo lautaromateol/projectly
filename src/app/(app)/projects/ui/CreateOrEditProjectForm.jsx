@@ -1,47 +1,54 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Label, Input, Textarea, Select, SelectTrigger, SelectValue, SelectItem, SelectContent, DatePickerWithPresets } from "@/components/ui/forms"
-import { useForm, Controller } from "react-hook-form"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { Label, Input, Textarea, DatePickerWithPresets } from "@/components/ui/forms"
 import { addProject, editProject } from "@/actions"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
 
 export function CreateOrEditProjectForm({ projectToEdit = {}, onCloseModal }) {
 
-  const { id, title, startDate, dueDate, status } = projectToEdit
+  const { id, title, description, startDate, dueDate } = projectToEdit
 
   const [start, setStartDate] = useState(startDate ? new Date(startDate) : null)
   const [due, setDueDate] = useState(dueDate ? new Date(dueDate) : null)
   const [error, setError] = useState(false)
+  const [isPending, setIsPending] = useState(false)
 
   const isEditSession = Boolean(id)
 
-  const { handleSubmit, control, register } = useForm({
+  const { handleSubmit, register, formState: { isDirty } } = useForm({
     defaultValues: isEditSession ?
       {
         title,
-        status
+        description,
       }
       :
       {}
   })
 
-  async function onSubmit({ title, status }) {
+  async function onSubmit({ title, description }) {
 
-    if(!start || !due) {
+    setIsPending(true)
+
+    if (!start || !due) {
       setError(true)
+      setIsPending(false)
       return
     }
 
     const payload = {
       title,
-      status,
+      description,
       startDate: new Date(start),
       dueDate: new Date(due)
     }
 
     const response = isEditSession ? await editProject(payload, id) : await addProject(payload)
 
-    if(!response.ok) return 
+    if (!response.ok) {
+      setIsPending(false)
+      return
+    }
 
     onCloseModal()
   }
@@ -59,26 +66,11 @@ export function CreateOrEditProjectForm({ projectToEdit = {}, onCloseModal }) {
             <Input {...register("title", { required: true })} id="title" placeholder="Enter project title" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Controller
-              name="status"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select onValueChange={(value) => field.onChange(value)} value={field.value} id="status">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="InProgress">In Progress</SelectItem>
-                    <SelectItem value="Complete">Complete</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
+            <Label htmlFor="description">Description</Label>
+            <Textarea {...register("description", { required: true })} id="description" placeholder="Enter project description" />
           </div>
           <div className="flex flex-col gap-2">
-            <Label>Due date</Label>
+            <Label>Start date</Label>
             <DatePickerWithPresets date={start} setDate={setStartDate} setError={setError} />
             {error ? <p className="text-sm text-red-500">Please select a start date</p> : ""}
           </div>
@@ -87,7 +79,7 @@ export function CreateOrEditProjectForm({ projectToEdit = {}, onCloseModal }) {
             <DatePickerWithPresets date={due} setDate={setDueDate} setError={setError} />
             {error ? <p className="text-sm text-red-500">Please select a due date</p> : ""}
           </div>
-          <Button className="mt-2" type="submit">{isEditSession ? "Edit" : "Create"} Project</Button>
+          <Button disabled={isPending || !isDirty} className="mt-2" type="submit">{isEditSession ? "Edit" : "Create"} Project</Button>
         </form>
       </CardContent>
     </Card>
