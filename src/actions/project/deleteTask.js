@@ -27,11 +27,42 @@ export async function deleteTask(projectId, taskId) {
       }
     }
 
-    await prisma.task.delete({
+    const taskToDelete = await prisma.task.delete({
       where: {
         id: taskId
       }
     })
+
+    const userStory = await prisma.userStory.findUnique({
+      where: { id: taskToDelete.userStoryId },
+      include: {
+        Task: {
+          select: {
+            status: true
+          }
+        }
+      }
+    })
+
+    const tasksLength = userStory.Task.length
+
+    const completedTasksLength = userStory.Task.filter((task) => task.status === "Complete").length
+
+    if (tasksLength === 0) {
+      await prisma.userStory.update({
+        where: { id: userStory.id },
+        data: {
+          status: "Pending"
+        }
+      })
+    } else if (tasksLength === completedTasksLength) {
+      await prisma.userStory.update({
+        where: { id: userStory.id },
+        data: {
+          status: "Complete"
+        }
+      })
+    }
 
     revalidatePath(`/project/${projectId}`)
 

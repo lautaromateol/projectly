@@ -27,10 +27,34 @@ export async function editTask(projectId, taskId, task) {
       }
     }
 
-    await prisma.task.update({
+    const taskToUpdate = await prisma.task.update({
       where: { id: taskId },
       data: task
     })
+
+    const userStory = await prisma.userStory.findUnique({
+      where: { id: taskToUpdate.userStoryId },
+      include: {
+        Task: {
+          select: {
+            status: true
+          }
+        }
+      }
+    })    
+
+    const tasksLength = userStory.Task.length
+
+    const completedTasksLength = userStory.Task.filter((task) => task.status === "Complete").length
+
+    if(tasksLength === completedTasksLength) {
+      await prisma.userStory.update({
+        where: { id: userStory.id },
+        data: {
+          status: "Complete"
+        }
+      })
+    }
 
     revalidatePath(`/project/${projectId}`)
 

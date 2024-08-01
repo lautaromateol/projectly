@@ -37,6 +37,13 @@ export async function addTask(projectId, userStoryId, task) {
       }
     })
 
+    await prisma.userStory.update({
+      where: { id: userStoryId },
+      data: {
+        status: "InProgress"
+      }
+    })
+
     revalidatePath(`/project/${projectId}`)
 
     return { ok: true }
