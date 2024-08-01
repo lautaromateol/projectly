@@ -15,7 +15,7 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
 
   const isEditSession = Boolean(id)
 
-  const { handleSubmit, register, control } = useForm({
+  const { handleSubmit, register, control, formState: { isDirty } } = useForm({
     defaultValues: isEditSession ?
       {
         title,
@@ -93,7 +93,7 @@ export function AddOrEditFunctionalRequirementsForm({ projectId, onCloseModal, r
               <HiPlusCircle />
             </button>
           </div>
-          <Button disabled={isPending} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} Functional Requirement</Button>
+          <Button disabled={isPending || !isDirty} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} Functional Requirement</Button>
         </form>
       </CardContent>
     </Card>

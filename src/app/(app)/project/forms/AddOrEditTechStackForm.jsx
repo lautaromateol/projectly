@@ -15,7 +15,7 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
 
   const isEditSession = Boolean(id)
 
-  const { handleSubmit, register, control } = useForm({
+  const { handleSubmit, register, control, formState: { isDirty } } = useForm({
     defaultValues: isEditSession
       ?
       {
@@ -108,7 +108,7 @@ export function AddOrEditTechStackForm({ projectId, onCloseModal, stackToEdit = 
               <HiPlusCircle />
             </button>
           </div>
-          <Button disabled={isPending} className="mt-2" type="submit">{ isEditSession ? "Edit" : "Add" } Tech Stack</Button>
+          <Button disabled={isPending || !isDirty} className="mt-2" type="submit">{ isEditSession ? "Edit" : "Add" } Tech Stack</Button>
         </form>
       </CardContent>
     </Card>

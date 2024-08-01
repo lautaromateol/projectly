@@ -1,9 +1,9 @@
 "use client"
-import { useState } from "react"
 import { Label, Input, Textarea, Select, SelectTrigger, SelectValue, SelectItem, SelectContent, DatePickerWithPresets } from "@/components/ui/forms"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { addUserStory, editUserStory } from "@/actions"
 import { useForm, Controller } from "react-hook-form"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
 export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = {} }) {
@@ -18,7 +18,7 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
 
   const isEditSession = Boolean(id)
 
-  const { handleSubmit, register, control } = useForm({
+  const { handleSubmit, register, control, formState: { isDirty } } = useForm({
     defaultValues: isEditSession
       ?
       {
@@ -98,7 +98,7 @@ export function AddOrEditUserStoryForm({ projectId, onCloseModal, storyToEdit = 
             <DatePickerWithPresets date={date} setDate={setDate} />
             {error ? <p className="text-sm text-red-500">Please select a due date</p> : ""}
           </div>
-          <Button disabled={isPending} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} User Story</Button>
+          <Button disabled={isPending || !isDirty} className="mt-2" type="submit">{isEditSession ? "Edit" : "Add"} User Story</Button>
         </form>
       </CardContent>
     </Card>
