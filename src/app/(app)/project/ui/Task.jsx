@@ -1,14 +1,12 @@
 "use client"
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { ConfirmDelete } from "@/components/ui/ConfirmDelete"
+import { EditTaskForm } from "../forms/EditTaskForm"
 import { deleteTask } from "@/actions"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Modal } from "@/components/ui/Modal"
-import Link from "next/link"
-import { EditTaskForm } from "../forms/EditTaskForm"
 
 export function Task({ task }) {
 
@@ -26,19 +24,7 @@ export function Task({ task }) {
       <CardContent>
         <p>{task.description}</p>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
-        <div className="flex text-sm text-muted-foreground">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src="/placeholder-user.jpg" />
-            <AvatarFallback>LM</AvatarFallback>
-          </Avatar>
-          <p className="flex items-center gap-1">
-            Asignada a{" "}
-            <Link href="#" className="font-medium" prefetch={false}>
-              Lautaro Mateo Leguizamón
-            </Link>
-          </p>
-        </div>
+      <CardFooter className="flex justify-end">
         <div className="flex items-center gap-2">
           <Modal>
             <Modal.Opens opens="edit-task-form">
