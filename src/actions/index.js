@@ -20,3 +20,5 @@ export * from "./project/deleteTechStack";
 export * from "./auth/register";
 export * from "./auth/login";
 export * from "./tasks/getTasks";
+export * from "./analytics/getAnalytics";
+export * from "./profile/updateProfileData";
