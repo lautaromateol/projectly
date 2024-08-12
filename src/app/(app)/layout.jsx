@@ -1,7 +1,16 @@
 import { Sidebar } from "@/components/ui/Sidebar"
 import { Header } from "@/components/ui/Header"
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth.config";
 
-export default function AppLayout({ children }) {
+export default async function AppLayout({ children }) {
+
+  const session = await auth()
+
+  const isAuthenticated = !!session?.user
+
+  if(!isAuthenticated) redirect("/auth/login")
+
   return (
     <div className="flex min-h-screen w-full">
       <Sidebar />
