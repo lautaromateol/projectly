@@ -1,13 +1,34 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { updateProfileData } from "@/actions/profile/updateProfileData"
+import { Label, Input } from "@/components/ui/forms"
 import { Button } from "@/components/ui/button"
-import { Label, Input, Textarea } from "@/components/ui/forms"
 import { auth } from "@/lib/auth.config"
-import Link from "next/link"
+import prisma from "@/lib/prisma"
 
 export default async function ProfilePage() {
 
   const session = await auth()
 
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id }
+  })
+
+  const name = user.name
+
+  const initials = name.split(' ').length === 1 ? name.slice(0, 2).toUpperCase() : name.split(' ').slice(0, 2).map(word => word[0]).join('').toUpperCase();
+    
+  async function handleProfileUpdate(formData) {
+    "use server"
+
+    const profileData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      role: formData.get("role")
+    }
+
+    await updateProfileData(profileData)  
+  }
+      
   return (
     <div className="w-full max-w-4xl mx-auto py-8 px-4 md:px-6">
       <div className="grid gap-8">
@@ -15,16 +36,16 @@ export default async function ProfilePage() {
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
               <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>LM</AvatarFallback>
+              <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div className="grid gap-1">
-              <div className="text-lg font-medium">{session.user.name}</div>
-              <div className="text-sm text-muted-foreground">Project Manager</div>
-              <div className="text-sm text-muted-foreground">{session.user.email}</div>
+              <div className="text-lg font-medium">{name}</div>
+              <div className="text-sm text-muted-foreground">{user.role}</div>
+              <div className="text-sm text-muted-foreground">{user.email}</div>
             </div>
           </div>
         </div>
-        <div className="bg-background rounded-lg shadow-sm p-6">
+        {/* <div className="bg-background rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-medium">Projects</h2>
             <Link
@@ -62,36 +83,36 @@ export default async function ProfilePage() {
               <div className="text-sm text-muted-foreground mt-2">Due: May 1, 2023</div>
             </div>
           </div>
-        </div>
-        <div className="bg-background rounded-lg shadow-sm p-6">
+        </div> */}
+        <form action={handleProfileUpdate} className="bg-background rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-medium">Profile Settings</h2>
-            <Button>Save Changes</Button>
+            <Button type="submit">Save Changes</Button>
           </div>
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue={session.user.name} />
+                <Input name="name" id="name" defaultValue={name} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue={session.user.email} />
+                <Input name="email" id="email" type="email" defaultValue={user.email} />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
-              <Input id="role" defaultValue="Project Manager" />
+              <Input name="role" id="role" defaultValue={user.role} />
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 id="bio"
                 rows={3}
                 defaultValue="I'm a project manager with 5 years of experience." />
-            </div>
+            </div> */}
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
