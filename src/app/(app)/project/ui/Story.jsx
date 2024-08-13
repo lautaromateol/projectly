@@ -20,7 +20,7 @@ export function Story({ story, projectId }) {
       <Card>
         <CardHeader>
           <CardTitle>{story.title}</CardTitle>
-          <CardDescription>{story.description}</CardDescription>
+          <CardDescription>{story.description.length > 91 ? story.description.slice(0, 91) + "..." : story.description}</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
           <div className="flex items-center gap-2">
