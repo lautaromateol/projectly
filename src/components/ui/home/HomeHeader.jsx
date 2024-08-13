@@ -9,7 +9,7 @@ export async function HomeHeader() {
   const isAuthenticated = !!session?.user
 
   return (
-    <header className="bg-white max-w-7xl mx-auto py-4 fixed top-0 left-0 right-0 z-50">
+    <header className="bg-white max-w-7xl mx-auto py-4 fixed top-0 left-0 right-0 z-50 px-4 lg:px-0">
       <nav className="flex items-center justify-between">
         <Link href="/">
           <Logo />

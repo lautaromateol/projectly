@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <main className="flex-1">
-        <section className="container py-12 md:py-24">
+        <section className="container py-24 md:pb-12">
           <div className="mx-auto max-w-3xl space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl font-bold tracking-wide md:text-5xl">About Projectly</h1>

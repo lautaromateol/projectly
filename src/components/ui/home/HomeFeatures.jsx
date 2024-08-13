@@ -2,12 +2,12 @@ import { HiOutlineCalendar, HiOutlineChartBar, HiOutlineFolder } from "react-ico
 
 export function HomeFeatures() {
   return (
-    <section className="max-w-7xl mx-auto py-24">
+    <section className="max-w-7xl mx-auto py-24 px-4 lg:px-0">
       <div className="space-y-1 mb-12">
         <p className="text-sm font-semibold tracking-tight uppercase text-gray-500">How It Works</p>
         <h2 className="text-4xl font-bold">Application Features</h2>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid gird-cols-1 lg:grid-cols-3 gap-4">
         <div className="flex flex-col space-y-4 p-4">
           <div className="flex items-center gap-2">
             <HiOutlineFolder className="size-10" />

@@ -23,7 +23,7 @@ const navItems = [
 export function Sidebar() {
   return (
     <aside
-      className="bg-background border-r border-border flex flex-col w-64 p-4 gap-4 sticky top-0 h-screen">
+      className="bg-background border-r border-border flex flex-col w-52 lg:w-64 p-4 gap-4 sticky top-0 h-screen">
       <Logo />
       <nav className="flex flex-col gap-2">
         {navItems.map(({ title, href, icon }) => (
