@@ -27,7 +27,7 @@ export async function getProjectById(id) {
             }
           },
           orderBy: {
-            createdAt: "asc"
+            due: "asc"
           }
         },
         TechStack: {
