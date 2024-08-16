@@ -1,6 +1,7 @@
+import { HandleSidebarBtn } from "@/components/ui/HandleSidebarBtn";
+import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/ui/Sidebar"
 import { Header } from "@/components/ui/Header"
-import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth.config";
 
 export default async function AppLayout({ children }) {
@@ -9,7 +10,7 @@ export default async function AppLayout({ children }) {
 
   const isAuthenticated = !!session?.user
 
-  if(!isAuthenticated) redirect("/auth/login")
+  if (!isAuthenticated) redirect("/auth/login")
 
   return (
     <div className="flex min-h-screen w-full">
@@ -20,6 +21,7 @@ export default async function AppLayout({ children }) {
           {children}
         </main>
       </div>
+     <HandleSidebarBtn context="open" />
     </div>
   );
 }
