@@ -1,11 +1,12 @@
 "use client"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { RESULTS_PER_PAGE } from "@/lib/constants";
 import { usePaginate } from "@/context/PaginateContext";
 import { Paginate } from "./Paginate";
 import { Task } from "./Task"
 
 export function Tasks({ tasks }) {
+
+  const RESULTS_PER_PAGE = 3
 
   const incomplete = tasks.filter(({ status }) => status === "Incomplete")
   const complete = tasks.filter(({ status }) => status === "Complete")
