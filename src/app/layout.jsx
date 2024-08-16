@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { PaginateProvider } from "@/context/PaginateContext";
+import { Provider } from "@/context/providers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,9 +12,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <PaginateProvider>
+      <Provider>
         <body className={inter.className}>{children}</body>
-      </PaginateProvider>
+      </Provider>
     </html>
   );
 }
