@@ -1,6 +1,6 @@
 "use client"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { AddOrEditUserStoryForm } from "../forms/AddOrEditUserStoryForm";
 import { MoveHorizontalIcon } from "@/icons";
 import { UserStoryDetails } from "./UserStoryDetails";
@@ -9,6 +9,7 @@ import { ConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Modal } from "@/components/ui/Modal";
+import { formatDate } from "@/lib/utils";
 
 export function Story({ story, projectId }) {
 
@@ -20,13 +21,14 @@ export function Story({ story, projectId }) {
       <Card>
         <CardHeader>
           <CardTitle>{story.title}</CardTitle>
-          <CardDescription>{story.description.length > 91 ? story.description.slice(0, 91) + "..." : story.description}</CardDescription>
+          <CardDescription>{story.description.length > 110 ? story.description.slice(0, 110) + "..." : story.description}</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
             <Badge>{story.status === "Pending" ? "Pending" : story.status === "InProgress" ? "In Progress" : "Complete"}</Badge>
             <p className="font-medium text-base">Tasks Completed: {completedTasksLength}/{tasksLength}</p>
-          </div>
+        </CardContent>
+        <CardFooter className="flex items-center justify-between">
+          <p className="text-sm text-gray-500 italic font-semibold">Due date: {formatDate(new Date(story.due))}</p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -52,7 +54,7 @@ export function Story({ story, projectId }) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </CardContent>
+        </CardFooter>
       </Card>
       <Modal.Window window="user-story-details">
         <UserStoryDetails projectId={projectId} story={story} />

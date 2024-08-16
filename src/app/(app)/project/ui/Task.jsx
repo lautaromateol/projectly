@@ -13,7 +13,7 @@ export function Task({ task }) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <div>
             <div className="font-medium">{task.userStory.title}</div>
             <div className="text-sm text-muted-foreground">{task.userStory.description}</div>

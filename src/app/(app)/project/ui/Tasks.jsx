@@ -23,7 +23,7 @@ export function Tasks({ tasks }) {
 
 
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full">
       <Tabs defaultValue="complete" className="w-full">
         <TabsList className="border-b">
           <TabsTrigger value="incomplete">Incomplete</TabsTrigger>
